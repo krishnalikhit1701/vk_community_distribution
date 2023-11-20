@@ -1,32 +1,27 @@
-## vk.com community members sex and age distribution (population pyramid)
+vk.com community members sex and age distribution (population pyramid)
+Script for obtaining a graph and data on the distribution of VK community members by gender and age (Age-sex pyramid)
 
-**Скрипт для получения графика и данных распределения участников сообщества вк по полу и возрасту (Возрастно-половая пирамида)**
-
-Пример:
-
-![](./example.png)
+Example:
 
 
-#### Запуск
-+ Установить пакеты из `requirements.txt`
-+ Заменить шаблоны в `secret.json` на свои логин и пароль
-+ Ввести короткую ссылку на сообщество или пользователя в переменную TARGET
-+ Запустить
-+ Данные и график сохранятся в этом же каталоге в одноименной с TARGET папке
 
-Примечание: Да, ввод логина и пароля не самый лучший метод, однако самый простой. Вы можете сами проанализировать мой код и код vk-api чтобы убедиться в их безопастности. Если же вы хотите реализовать метод авторизации Implicit Flow, то я готов к сотрудничеству.
+Launch
+Install packages fromrequirements.txt
+Replace templates secret.jsonwith your login and password
+Enter a short link to the community or user in the TARGET variable
+Launch
+The data and graph will be saved in the same directory in a folder of the same name as TARGET
+Note: Yes, entering your username and password is not the best method, but it is the easiest. You can analyze my code and the vk-api code yourself to make sure they are safe. If you want to implement the Implicit Flow authorization method, then I am ready to cooperate.
 
-#### Функции
+Functions
+The class is divided into 4 main functions:
 
-Класс разбит на 4 главных функции:
+get_members_ids - gets the ids of all community members or friends of the user
 
-+ *get_members_ids* - получает id всех участников сообщества или друзей пользователя
+get_users_data - gets data about the age and gender of these ids
 
-+ *get_users_data* - получает данные о возрасте и поле этих id
+Because VK has a limit on the number of API method calls per day. It will be possible to analyze communities with a huge number of users no more than a couple of times a day. Therefore, to save requests, data about participant ids and additional fields are saved as json in the same folder. After saving the data, I recommend turning off the get_members_ids and get_users_data calls
 
-Поскольку в ВК стоит ограничение на количество вызовов методов api в сутки. То сообщества с огромным количеством пользователей получится проанализировать не чаще пары раз в сутки. Поэтому для экономии запросов, данные об id участников и дополнительные поля сохраняются в виде json в ту же папку. После сохранения данных рекомендую выключить вызов *get_members_ids* и *get_users_data*
-
-+ *calculate* - подсчитывает различиные параметры о пользователях, меняйте на свой усмотрение
-+ *make_plot* - строит гистограмму распределения по полу и возрасту
-
-В качестве TARGET подойдёт короткая ссылка на сообщество или id пользователя. Не забудьте поменять type group_members / user_friends
+calculate - calculates various parameters about users, change at your discretion
+make_plot - builds a histogram of distribution by gender and age
+A short link to the community or user id is suitable as a TARGET. Don't forget to change type group_members / user_friends
