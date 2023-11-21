@@ -66,7 +66,7 @@ class GetInfo:
                     offset +=25000
 
             elif self.type == 'user_friends':
-                print(f'Get friens ids...')
+                print(f'Get friends ids...')
                 try:
                     id = int(self.target.replace('id',''))
                 except:
