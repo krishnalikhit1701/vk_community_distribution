@@ -234,7 +234,7 @@ class GetInfo:
 
 if __name__=='__main__':
 
-    TARGET = 'https://vk.com/usova212'
+    TARGET = 'miraprinse'
 
     login, password = json.load(open('secret.json'))
     getter = GetInfo(login, password, TARGET, type = 'user_friends', normed = False) # or type = 'group_members'/'user_friends'
