@@ -9,7 +9,7 @@ from vk_api import VkApi
 import numpy as np
 import cv2
 
-# Загружает аватары друзей из вк
+# Loads avatars of friends from VK
 def load_avatars():
     login, password = json.load(open('secret.json'))
     vk = VkApi(login, password)
