@@ -139,9 +139,11 @@ class GetInfo:
             elif data['sex']==2: self.mens += 1
             else: self.no_sex +=1   
 
-            if (('bdate' in data) and (len(data['bdate'].split('.'))==3)): # Если дата указана и содержит год рожения
+            if (('bdate' in data) and (len(data['bdate'].split('.'))==3)): # If the date is specified and contains the year of birth
+
                 year = int((data['bdate'].split('.'))[2])
-                if year>1960: # Хвост графика из фейковых дат рождения нас не интересует
+                if year>1960:# We are not interested in the tail of the graph from fake birth dates
+
                     if data['sex']==1: self.bdate_womans.append(year)
                     elif data['sex']==2: self.bdate_mans.append(year)
                         
@@ -159,7 +161,7 @@ class GetInfo:
         fig, ax1 = plt.subplots()
         fig.set_size_inches((16, 9), forward=False)
 
-        if self.normed: # Нормируется соотношение полов, основываясь на общем соотношении, независимо от числа открытых женских аккаунтов
+        if self.normed: # The gender ratio is normalized based on the overall ratio, regardless of the number of open female accounts
             norm_koeff = (self.mens/self.womans)/(len(bdate_mans)/len(bdate_womans))
             bincount_m = np.bincount(bdate_mans)[1961:]*norm_koeff
             bincount_w = np.bincount(bdate_womans)[1961:]
@@ -185,8 +187,8 @@ class GetInfo:
         labels = [str(i) for i in bins]
         ax1.set_xticks(bins)
         ax1.set_xticklabels(labels, rotation=90)
-        ax1.set_xlabel("Год рождения")
-        ax1.set_ylabel("Количество человек")
+        ax1.set_xlabel("Year of birth")
+        ax1.set_ylabel("Number of persons")
         
 
         labels_top = [str(2020-i) for i in bins]
@@ -194,36 +196,36 @@ class GetInfo:
         ax2.set_xlim(ax1.get_xlim())
         ax2.set_xticks(bins)
         ax2.set_xticklabels(labels_top, rotation=90)
-        ax2.set_xlabel("Возраст")
+        ax2.set_xlabel("Age")
 
         try:
             if self.type == 'group_members':
                 group_info = self.vk.method('groups.getById', {'group_ids':self.target})
-                plt.title(f'''"{group_info[0]["name"]}" - Возрастно-половая диаграмма''')
+                plt.title(f'''"{group_info[0]["name"]}" -Age-sex chart''')
             else:
                 user_info = self.vk.method('users.get', {'user_ids':self.target})[0]
                 first_name, last_name = user_info['first_name'], user_info['last_name']
-                plt.title(f'Возрастно-половая диаграмма друзей: {first_name} {last_name}')
+                plt.title(f'Friends age and sex chart: {first_name} {last_name}')
         except:
-            plt.title(f'Возрастно-половая диаграмма: {self.target}')
+            plt.title(f'Age-sex chart: {self.target}')
         
-        a = mpatches.Patch(color='slateblue', label=f'Мужчин: {self.mens} ({int(100*(self.mens/(self.mens+self.womans)))}%)')
-        b = mpatches.Patch(color='violet', label=f'Женщин: {self.womans} ({int(100*(self.womans/(self.mens+self.womans)))}%)')
+        a = mpatches.Patch(color='slateblue', label=f'Men: {self.mens} ({int(100*(self.mens/(self.mens+self.womans)))}%)')
+        b = mpatches.Patch(color='violet', label=f'Women: {self.womans} ({int(100*(self.womans/(self.mens+self.womans)))}%)')
 
         c = mpatches.Patch(color='white', label ='')
-        d = mpatches.Patch(color='gray', label=f'Активных: {self.active} ({int(100*(self.active/(self.banned+self.active+self.deleted)))}%)')
-        e = mpatches.Patch(color='gray', label=f'Активных закрытых: {self.closed_accounts} ({int(100*(self.closed_accounts/(self.open_accounts+self.closed_accounts)))}%)')
-        f = mpatches.Patch(color='gray', label=f'Активных открытых: {self.open_accounts} ({int(100*(self.open_accounts/(self.open_accounts+self.closed_accounts)))}%)')
-        g = mpatches.Patch(color='gray', label=f'Удалённых: {self.deleted} ({int(100*(self.deleted/(self.banned+self.active+self.deleted)))}%)')
-        h = mpatches.Patch(color='gray', label=f'Заблокированных: {self.banned} ({int(100*(self.banned/(self.banned+self.active+self.deleted)))}%)')
-        i = mpatches.Patch(color='gray', label=f'Всего: {self.count_of_members}')
+        d = mpatches.Patch(color='gray', label=f'Active: {self.active} ({int(100*(self.active/(self.banned+self.active+self.deleted)))}%)')
+        e = mpatches.Patch(color='gray', label=f'Active closed: {self.closed_accounts} ({int(100*(self.closed_accounts/(self.open_accounts+self.closed_accounts)))}%)')
+        f = mpatches.Patch(color='gray', label=f'Active open: {self.open_accounts} ({int(100*(self.open_accounts/(self.open_accounts+self.closed_accounts)))}%)')
+        g = mpatches.Patch(color='gray', label=f'Deleted: {self.deleted} ({int(100*(self.deleted/(self.banned+self.active+self.deleted)))}%)')
+        h = mpatches.Patch(color='gray', label=f'Blocked: {self.banned} ({int(100*(self.banned/(self.banned+self.active+self.deleted)))}%)')
+        i = mpatches.Patch(color='gray', label=f'Total: {self.count_of_members}')
 
         j = mpatches.Patch(color='white', label ='')
-        k = mpatches.Patch(color='gray', label=f'Указан год и пол: {len(bdate_womans)+len(bdate_mans)} ({int(100*((len(bdate_womans)+len(bdate_mans))/self.count_of_members))}%)')
-        l = mpatches.Patch(color='gray', label=f'из них: М: {len(bdate_mans)} ({int(100*(len(bdate_mans)/(len(bdate_womans)+len(bdate_mans))))}%) Ж: {len(bdate_womans)} ({int(100*(len(bdate_womans)/(len(bdate_womans)+len(bdate_mans))))}%)')
-        m = mpatches.Patch(color='gray', label =f'Нормировка графика по полу: {self.normed}')
-        n = mpatches.Patch(color='gray', label =f'Ср. возраст мужчин: {2020-int(self.avg_mens)}')
-        o = mpatches.Patch(color='gray', label =f'Ср. возраст женщин: {2020-int(self.avg_womans)}')
+        k = mpatches.Patch(color='gray', label=f'Year and gender indicated: {len(bdate_womans)+len(bdate_mans)} ({int(100*((len(bdate_womans)+len(bdate_mans))/self.count_of_members))}%)')
+        l = mpatches.Patch(color='gray', label=f'of them: М: {len(bdate_mans)} ({int(100*(len(bdate_mans)/(len(bdate_womans)+len(bdate_mans))))}%) W: {len(bdate_womans)} ({int(100*(len(bdate_womans)/(len(bdate_womans)+len(bdate_mans))))}%)')
+        m = mpatches.Patch(color='gray', label =f'Normalization of the schedule by gender: {self.normed}')
+        n = mpatches.Patch(color='gray', label =f'Cp. age of men: {2020-int(self.avg_mens)}')
+        o = mpatches.Patch(color='gray', label =f'Ср.age of women: {2020-int(self.avg_womans)}')
 
 
         plt.legend(handles=[a,b,c,d,e,f,g,h,i,j,k,l,m,n,o], loc='upper left')
