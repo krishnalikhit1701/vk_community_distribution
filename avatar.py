@@ -46,7 +46,7 @@ def load_avatars():
             pass
 
 
-# Обрезает их до разрешения первого аватара
+# Trims them to the resolution of the first avatar
 def crop(img):
     n, m = img.shape[0], img.shape[1]
     if n<m:
@@ -55,7 +55,7 @@ def crop(img):
         img = img[((n-m)//2):m+((n-m)//2), :, : ]
     return img
 
-# усредняет аватары
+# averages avatars
 PATH = 'anime'
 imagelist = os.listdir(PATH)
 images = []
